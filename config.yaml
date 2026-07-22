@@ -1,0 +1,116 @@
+metrics:
+  faithfulness:
+    weight: 0.25
+    lower_bound: 0.0
+    upper_bound: 1.0
+    critical_threshold: 0.4
+    enabled: true
+  sfc:
+    weight: 0.20
+    lower_bound: 0.0
+    upper_bound: 1.0
+    critical_threshold: 0.3
+    enabled: true
+  ids:
+    weight: 0.15
+    lower_bound: 0.0
+    upper_bound: 1.0
+    critical_threshold: 0.2
+    enabled: true
+  cost_score:
+    weight: 0.15
+    lower_bound: 0
+    upper_bound: 100
+    critical_threshold: 20
+    enabled: true
+  trust_score:
+    weight: 0.10
+    lower_bound: 0
+    upper_bound: 1
+    critical_threshold: 0.4
+    enabled: true
+  coverage_efficiency:
+    weight: 0.10
+    lower_bound: 0
+    upper_bound: 1
+    enabled: true
+  latency_score:
+    weight: 0.05
+    lower_bound: 0
+    upper_bound: 100
+    enabled: true
+
+normalization:
+  latency_ms:
+    type: "step_penalty"
+    thresholds:
+      200: 100
+      500: 80
+      1000: 50
+      2000: 0
+  faithfulness:
+    type: "linear"
+    lower_bound: 0.55
+    upper_bound: 0.99
+  cost_score:
+    type: "linear"
+    lower_bound: 0
+    upper_bound: 100
+
+guardrails:
+  - metric: "faithfulness"
+    min_value: 0.70
+    fail_score: 0.0
+  - metric: "sfc"
+    min_value: 0.20
+    fail_score: 0.0
+  - metric: "trust_score"
+    min_value: 0.55
+    fail_score: 0.0
+
+latency_penalty: 5.0
+latency_threshold_ms: 300
+
+bonus_penalty:
+  - condition: "latency < 200"
+    bonus: 5
+  - condition: "cost_score > 90"
+    bonus: 3
+
+interaction_modifiers:
+  - condition: "faithfulness > 0.9 and sfc < 0.4"
+    description: "High faithfulness but low coverage suggests retrieval missed relevant docs"
+    penalty: 10
+  - condition: "latency < 200 and cost_score > 80"
+    description: "Fast and cheap — business optimal"
+    bonus: 5
+  - condition: "trust_score < 0.5 and faithfulness < 0.6"
+    description: "Critical trust failure"
+    penalty: 20
+
+ragas_enabled: false
+llm_judge_enabled: false
+llm_judge_provider: "openai"
+llm_judge_model: "gpt-4o-mini"
+
+cost_config:
+  input_token_price: 0.00015
+  output_token_price: 0.0006
+  model: "gpt-4o-mini"
+  gpu_price_per_hour: 2.50
+
+business_dimensions:
+  retrieval: 0.25
+  generation: 0.40
+  business: 0.35
+
+fault_thresholds:
+  hit_rate: 0.70
+  ndcg: 0.65
+  sfc: 0.60
+  ids: 0.30
+  faithfulness: 0.70
+  cost_score: 50.0
+  trust_score: 0.65
+  coverage_efficiency: 0.15
+  latency_score: 40.0
