@@ -4,6 +4,7 @@
 
 <br>
 
+
 **RAGNAROK is a сonfigurable modular LLM-Independent RAG Evaluation Framework**
 
 RAGNAROK evaluates Retrieval-Augmented Generation (RAG) pipelines end-to-end — retrieval, generation,
