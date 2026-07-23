@@ -143,7 +143,7 @@ result = evaluator.evaluate(
 print(result["business_metrics"]["gpu_efficiency_score"])
 ```
 
-## 5. Configuration Options (brief)
+## 5. Configuration Options
 
 | Option | Where | Purpose |
 |---|---|---|
