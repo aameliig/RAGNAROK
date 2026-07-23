@@ -1,6 +1,7 @@
-# RAGNAROK: RAG Neutral Assessment & Reasoning Optimization Kit
+# RAGNAROK: RAG Numeric Analytics, Root-cause & Outcome Kit
 
-> **From technical metrics to configurable business value**
+***Where bad RAG pipelines meet their Ragnarök***
+
 <br>
 
 **RAGNAROK is a сonfigurable modular LLM-Independent RAG Evaluation Framework**
